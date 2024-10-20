@@ -7,13 +7,6 @@ const overlayColor = Color(0xFF2A2A2A);
 const subTextColor = Color(0xFF989898);
 const primaryColor = Color(0xFFF26624);
 
-// const String baseUrl = "https://app-server.livelycliff-707ceb90.eastus.azurecontainerapps.io";
-const String baseUrl = "https://rapid-raptor-slightly.ngrok-free.app";
-// const String stockBaseUrl = "https://flask-server.livelycliff-707ceb90.eastus.azurecontainerapps.io";
-const String stockBaseUrl = "https://growing-positive-ewe.ngrok-free.app";
-// const String ws = "https://flask-server.livelycliff-707ceb90.eastus.azurecontainerapps.io";
-const String ws = "ws://rapid-raptor-slightly.ngrok-free.app";
-
 final formatter = NumberFormat.currency(locale: 'en_IN', symbol: '₹ ');
 
 String displayAccountNumber(String accountNumber, {String maskChar = 'X'}) {

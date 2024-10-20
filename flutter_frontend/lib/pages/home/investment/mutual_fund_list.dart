@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_frontend/constants.dart';
 import 'package:flutter_frontend/controllers/investment_controller.dart';
 import 'package:flutter_frontend/pages/widgets/mutual_fund_tile.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 
 class MutualFundsList extends StatelessWidget {
@@ -15,9 +14,7 @@ class MutualFundsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return mutualFundsController.searchType.value == "amc"
-        ? mutualFundsController.mutualFunds.isEmpty
-            ? const Center(child: SpinKitWaveSpinner(color: primaryColor))
-            : Expanded(
+        ? Expanded(
                 child: ListView.builder(
                   itemCount: mutualFundsController.mutualFunds.length,
                   itemBuilder: (context, index) {

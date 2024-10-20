@@ -2,7 +2,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_frontend/controllers/investment_controller.dart';
 import 'package:flutter_frontend/pages/widgets/mutual_fund_tile.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 
 class MutualFundsInvestments extends StatelessWidget {

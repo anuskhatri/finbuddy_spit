@@ -49,7 +49,7 @@ class ListAllGoals extends StatelessWidget {
                   ),
                   child: InkWell(
                     onTap: () {
-                      goalController.getGoalMap(goal.id);
+                      // goalController.getGoalMap(goal.id);
                     },
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,

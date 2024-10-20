@@ -5,7 +5,6 @@ import 'package:flutter_frontend/controllers/investment_controller.dart';
 import 'package:flutter_frontend/controllers/summary_controller.dart';
 import 'package:flutter_frontend/controllers/transaction_controller.dart';
 import 'package:flutter_frontend/pages/home/dashboard/charts/piechart.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -87,35 +86,7 @@ class PortfolioSummary extends StatelessWidget {
               const SizedBox(
                 height: 30,
               ),
-              Obx(
-                () => summaryController.loading.isTrue
-                    ? const Center(
-                        child: Column(
-                        children: [
-                          SizedBox(
-                            height: 20,
-                          ),
-                          SpinKitWaveSpinner(
-                            color: primaryColor,
-                          ),
-                          SizedBox(
-                            height: 20,
-                          ),
-                          Text(
-                            "Eating data for breakfast ",
-                            style: TextStyle(
-                                color: subTextColor,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            "May take up to 5 seconds 🤓",
-                            style: TextStyle(
-                                color: subTextColor,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ))
-                    : Column(
+               Column(
                         children: [
                           Text.rich(
                             TextSpan(
@@ -147,7 +118,6 @@ class PortfolioSummary extends StatelessWidget {
                               style: const TextStyle(color: subTextColor)),
                         ],
                       ),
-              ),
               const SizedBox(
                 height: 20,
               ),

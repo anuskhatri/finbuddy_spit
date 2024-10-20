@@ -4,8 +4,8 @@ import 'package:flutter_frontend/constants.dart';
 import 'package:flutter_frontend/pages/home/investment/explore_funds.dart';
 import 'package:flutter_frontend/pages/home/investment/mutual_fund_list.dart';
 
-class BobInvestment extends StatelessWidget {
-  const BobInvestment({super.key});
+class SpitInvestment extends StatelessWidget {
+  const SpitInvestment({super.key});
 
   @override
   Widget build(BuildContext context) {

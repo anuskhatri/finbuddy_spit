@@ -28,7 +28,7 @@ class CreateGoal extends StatelessWidget {
               style: const TextStyle(color: Colors.white),
               decoration: InputDecoration(
                 suffix: IconButton(
-                  onPressed: goalController.fetchValidParameters,
+                  onPressed: (){},
                   icon: const FaIcon(
                     FontAwesomeIcons.paperPlane,
                     color: subTextColor,
@@ -314,7 +314,7 @@ class CreateGoal extends StatelessWidget {
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: TextButton(
-                            onPressed: goalController.fetchSavingsAccountMethod,
+                            onPressed: (){},
                             child: const Text(
                               "Create Summary",
                               style: TextStyle(

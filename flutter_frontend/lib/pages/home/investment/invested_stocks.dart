@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_frontend/constants.dart';
 import 'package:flutter_frontend/controllers/stocks_controller.dart';
 import 'package:flutter_frontend/pages/widgets/stocks_tile.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 

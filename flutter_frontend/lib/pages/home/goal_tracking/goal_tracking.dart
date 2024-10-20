@@ -4,8 +4,8 @@ import 'package:flutter_frontend/constants.dart';
 import 'package:flutter_frontend/pages/home/goal_tracking/body.dart';
 import 'package:flutter_frontend/pages/home/goal_tracking/header.dart';
 
-class BobGoalTracking extends StatelessWidget {
-  const BobGoalTracking({super.key});
+class SpitGoalTracking extends StatelessWidget {
+  const SpitGoalTracking({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_frontend/constants.dart';
+import 'package:flutter_frontend/pages/home/dashboard/dashboard.dart';
+import 'package:flutter_frontend/pages/home/goal_tracking/goal_tracking.dart';
+import 'package:flutter_frontend/pages/home/investment/investment.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 class SpitHome extends StatefulWidget {
   const SpitHome({super.key});
@@ -12,7 +15,9 @@ class _SpitHomeState extends State<SpitHome> {
   int _selectedIndex = 0;
 
   static final List<Widget> _widgetOptions = <Widget>[
-    
+    const SpitDashboard(),
+    const SpitInvestment(),
+    const SpitGoalTracking()
   ];
 
   void _onItemTapped(int index) {

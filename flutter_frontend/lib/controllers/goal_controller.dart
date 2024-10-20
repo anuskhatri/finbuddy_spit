@@ -1,6 +1,5 @@
-
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_frontend/models/goals_model.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
@@ -27,8 +26,43 @@ class GoalController extends GetxController {
 
   RxBool processingCompleted = false.obs;
 
-  // Send Data To Summary
+  // Static Data for Goals
   RxMap<String, dynamic> goalData = <String, dynamic>{}.obs;
+
+  // Mock Data
+  RxList<Goal> allGoals = <Goal>[].obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    initializeStaticData();
+  }
+
+  void initializeStaticData() {
+    // Sample data for goals
+    allGoals.addAll([
+      Goal(id: 1, goalAmount: "5000.0", name: "New Car", targetDate: "01-12-2025"),
+      Goal(id: 2, goalAmount: "10000.0", name: "Vacation", targetDate: "15-06-2024"),
+      Goal(id: 3, goalAmount: "20000.0", name: "Home Renovation", targetDate: "30-09-2024"),
+    ]);
+
+    // Set initial values for other controllers
+    createGoalController.text = "Buy House";
+    goalAmountController.text = "30000.0";
+    goalTimeController.text = "24"; // Months
+    goalNameController.text = "New Home";
+    monthlyIncomeController.text = "5000"; // Monthly income
+    monthlyIncome.value = int.tryParse(monthlyIncomeController.text) ?? 0;
+
+    // Set static goal data
+    goalData.value = {
+      "goal_amount": 30000.0,
+      "time_frame": 24,
+      "saving_needed_excluding_all": 15000.0,
+      "interval": 12, // monthly savings
+      "goal_name": "New Home",
+    };
+  }
 
   @override
   void onClose() {
@@ -39,261 +73,26 @@ class GoalController extends GetxController {
     super.onClose();
   }
 
-  void changeSelectedInvestmentStrategy(String newInvestmentStrategy) {
-    selectedInvestmentStrategy.value = newInvestmentStrategy;
-  }
-
-  void fetchValidParameters() {
-    Dio()
-        .get(
-      "$baseUrl/api/goalTrack/inputAnalyse/${createGoalController.text}",
-      options: Options(headers: {
-        "userauth": Get.find<LoginController>().sessionToken,
-      }),
-    )
-        .then((response) {
-      if (response.statusCode == 200) {
-        var data = response.data;
-        if (data != null && data is Map<String, dynamic>) {
-          if (data.containsKey("goal_amount") &&
-              data.containsKey("time_frame")) {
-            goalAmountController.text = data["goal_amount"].toString();
-            goalTimeController.text = data["time_frame"].toString();
-            goalNameController.text = data["goal_name"].toString();
-            showValidationField.value = true;
-          } else {
-            Get.snackbar(
-                "Error", "Received data does not contain the expected keys");
-          }
-        } else {
-          Get.snackbar("Error", "Received null or invalid data from server");
-        }
-      } else {
-        Get.snackbar("Error", "Failed to fetch valid parameters");
-      }
-    }).catchError((error) {
-      Get.snackbar(
-          "Error", "An error occurred while fetching valid parameters");
-    });
-  }
-
-  // Savings Account
-  void fetchSavingsAccountMethod() {
-    if (monthlyIncomeController.text.isEmpty) {
-      Get.snackbar("Error", "Please enter your monthly income");
-      return;
-    }
-
-    goalAmount.value = double.tryParse(goalAmountController.text) ?? 0.0;
-    goalTime.value = int.tryParse(goalTimeController.text) ?? 0;
-    monthlyIncome.value = int.tryParse(monthlyIncomeController.text) ?? 0;
-    goalName.value = goalNameController.text;
-
-    if (goalAmount.value == 0.0 ||
-        goalTime.value == 0 ||
-        goalAmountController.text.isEmpty ||
-        goalTimeController.text.isEmpty) {
-      Get.snackbar("Error", "Please enter a valid goal amount and time frame");
-      return;
-    }
-
-    Dio().post(
-      "$baseUrl/api/goalTrack/saveMethod",
-      options: Options(
-        headers: {"userauth": Get.find<LoginController>().sessionToken},
-      ),
-      data: {
-        "goal_amount": goalAmount.value,
-        "time_frame": goalTime.value,
-        "month_income": monthlyIncome.value,
-        "loan": sendLoanData.value,
-        "transaction": sendTransactionData.value,
-        "balance": sendBalanceData.value,
-      },
-    ).then((response) {
-      if (response.statusCode == 200) {
-        var data = response.data;
-        if (data != null && data is Map<String, dynamic>) {
-          int tiles;
-          if (data["time_frame"] > 30) {
-            tiles = data["time_frame"] ~/ 30;
-          } else {
-            tiles = data["time_frame"];
-          }
-          goalData.value = data;
-          processingCompleted.value = true;
-          Get.to(() => Summary(), arguments: goalData);
-        } else {
-          Get.snackbar(
-              "Error", "Response data is null or not in expected format.");
-        }
-      } else if (response.statusCode == 404) {
-        Get.snackbar(
-            "Error", "Please enter a valid goal amount and time frame");
-      } else {}
-    }).catchError((error) {});
-  }
-
   void addGoal() {
-    Dio().post("$baseUrl/api/goalTrack/addGoalData",
-        options: Options(headers: {
-          "userauth": Get.find<LoginController>().sessionToken,
-        }),
-        data: {
-          "goal_amount": goalData["goal_amount"],
-          "time_frame": goalData["time_frame"],
-          "saving_needed": goalData["saving_needed_excluding_all"],
-          "interval": goalData["interval"],
-          "name": goalName.value,
-        }).then((response) {
-      if (response.statusCode == 200) {
-        Get.snackbar("Success", "Goal added successfully");
-        toggleAddGoal.value = false;
-        getAllGoals();
-        getGoalMap(response.data["goal_id"]);
-      } else {
-        Get.snackbar("Error", "Failed to add goal");
-      }
-    }).catchError((error) {
-      Get.snackbar("Error", "An error occurred while adding goal");
-    });
-  }
+    Goal newGoal = Goal(
+      id: allGoals.length + 1, // Simple ID generation
+      goalAmount: goalData["goal_amount"],
+      name: goalName.value,
+      targetDate: DateFormat('dd-MM-yyyy').format(DateTime.now().add(Duration(days: goalTime.value * 30))),
+    );
 
-// List Of All Goals
-  RxList<Goal> allGoals = <Goal>[].obs;
-
-  @override
-  void onInit() {
-    super.onInit();
-    getAllGoals();
-  }
-
-  void getAllGoals() {
-    Dio()
-        .get(
-      "$baseUrl/api/goalTrack/getGoals",
-      options: Options(
-        headers: {
-          "userauth": Get.find<LoginController>().sessionToken,
-        },
-      ),
-    )
-        .then((response) {
-      if (response.statusCode == 200) {
-        var data = response.data;
-        if (data != null && data is List<dynamic>) {
-          try {
-            for (var item in data) {
-              DateTime targetDate = DateTime.parse(item['target_date']);
-              String formattedDate =
-                  DateFormat('dd-MM-yyyy').format(targetDate);
-              Goal goal = Goal(
-                id: item['id'] as int,
-                goalAmount: item['goal_amount'],
-                name: item['name'] as String,
-                targetDate: formattedDate,
-              );
-              allGoals.add(goal);
-              allGoals.refresh();
-            }
-          } catch (e) {
-            Get.snackbar("Error", "Failed to parse goals data: $e");
-          }
-        } else {
-          Get.snackbar("Error", "Received null or invalid data from server");
-        }
-      } else {
-        Get.snackbar("Error",
-            "Failed to fetch goals with status code: ${response.statusCode}");
-      }
-    }).catchError((error) {
-      Get.snackbar("Error", "An error occurred: $error");
-    });
-  }
-
-// Individual Goal Data Month Wise
-  var individualGoalData = {}.obs;
-  void getGoalMap(int goalId) {
-    Dio()
-        .get("$baseUrl/api/goalTrack/getGoalMap/$goalId",
-            options: Options(headers: {
-              "userauth": Get.find<LoginController>().sessionToken,
-            }))
-        .then((response) {
-      if (response.statusCode == 200) {
-        var data = response.data;
-        individualGoalData.value = data;
-
-        if (data != null) {
-        } else {
-          Get.snackbar("Error", "Received null or invalid data from server");
-        }
-      } else {
-        Get.snackbar("Error", "Failed to fetch goal map");
-      }
-    }).catchError((error) {
-      Get.snackbar("Error", "An error occurred while fetching goal map");
-    }).whenComplete(() {
-      Get.back();
-      Get.to(() => GoalMap(),
-          arguments: individualGoalData, curve: Curves.easeInOut);
-    });
+    allGoals.add(newGoal);
+    Get.snackbar("Success", "Goal added successfully");
+    toggleAddGoal.value = false;
   }
 
   void updateGoal(String savedAmount) {
-    Dio().post("$baseUrl/api/goalTrack/updateGoal",
-        options: Options(headers: {
-          "userauth": Get.find<LoginController>().sessionToken,
-        }),
-        data: {
-          "goal_id": individualGoalData["goal"]["id"],
-          "saved_amount": savedAmount,
-          "goal_amount": individualGoalData["goal"]["goal_amount"],
-          "pending_amount": individualGoalData["pending_amount"],
-          "time_frame": individualGoalData["goal"]["time_frame"],
-          "interval": individualGoalData["goal"]["interval"],
-        }).then((response) {
-      if (response.statusCode == 200) {
-        var data = response.data;
-        if (data != null && data is Map<String, dynamic>) {
-          if (data["pending_amount"] == "0" && data["saving_needed"] == "0") {
-            Get.snackbar("Success", "Goal completed successfully");
-            return;
-          }
-          individualGoalData["goal"]["pending_amount"] = data["pending_amount"];
-          individualGoalData["goal"]["savings_needed"] = data["saving_needed"];
-          individualGoalData.refresh();
-
-          getGoalMap(individualGoalData["goal"]["id"]);
-        } else {
-          Get.snackbar("Error", "Received null or invalid data from server");
-        }
-      } else {
-        Get.snackbar("Error", "Failed to update goal");
-      }
-    }).catchError((error) {
-      Get.snackbar("Error", "An error occurred while updating goal");
-    });
+    // Implementation for updating the goal
   }
 
   void deleteGoal(int goalId) {
-    Dio()
-        .delete("$baseUrl/api/goalTrack/deleteGoal/$goalId",
-            options: Options(headers: {
-              "userauth": Get.find<LoginController>().sessionToken,
-            }))
-        .then((response) {
-      if (response.statusCode == 200) {
-        Get.snackbar("Success", "Goal deleted successfully",
-            colorText: Colors.white);
-        allGoals.removeWhere((element) => element.id == goalId);
-        allGoals.refresh();
-      } else {
-        Get.snackbar("Error", "Failed to delete goal", colorText: Colors.white);
-      }
-    }).catchError((error) {
-      Get.snackbar("Error", "An error occurred while deleting goal",
-          colorText: Colors.white);
-    });
+    allGoals.removeWhere((element) => element.id == goalId);
+    Get.snackbar("Success", "Goal deleted successfully");
   }
 }
+
