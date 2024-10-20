@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_frontend/constants.dart';
 import 'package:flutter_frontend/controllers/summary_controller.dart';
@@ -9,6 +8,7 @@ import 'package:flutter_frontend/pages/home/dashboard/header.dart';
 import 'package:flutter_frontend/pages/home/dashboard/linked_accounts.dart';
 import 'package:flutter_frontend/pages/home/dashboard/overall_investment.dart';
 import 'package:flutter_frontend/pages/home/dashboard/portfolio_summary.dart';
+import 'package:gauge_indicator/gauge_indicator.dart';
 import 'package:get/get.dart';
 
 class SpitDashboard extends StatefulWidget {
@@ -43,6 +43,10 @@ class _SpitDashboardState extends State<SpitDashboard> {
             height: 30,
           ),
           OverallInvestment(),
+          const SizedBox(
+            height: 30,
+          ),
+          Gauge(),
           const SizedBox(
             height: 30,
           ),
@@ -83,7 +87,6 @@ class _SpitDashboardState extends State<SpitDashboard> {
             alignment: Alignment.center,
             child: TextButton(
                 onPressed: () {
-
                   Get.back();
                 },
                 child: const Text(
@@ -100,4 +103,59 @@ class _SpitDashboardState extends State<SpitDashboard> {
   }
 }
 
+class Gauge extends StatelessWidget {
+  const Gauge({super.key});
 
+  @override
+  Widget build(BuildContext context) {
+    return const SizedBox(
+      width: double.infinity,
+      height: 120,
+      child: AnimatedRadialGauge(
+        duration: Duration(seconds: 1),
+        curve: Curves.elasticOut,
+        radius: 100,
+        value: 80,
+        axis: GaugeAxis(
+          min: 0,
+          max: 100,
+          degrees: 180,
+          style: GaugeAxisStyle(
+            thickness: 20,
+            background: Color(0xFFDFE2EC),
+            segmentSpacing: 4,
+          ),
+          pointer: GaugePointer.needle(
+            width: 16,
+            borderRadius: 16,
+            color: primaryColor,
+            height: 16,
+          ),
+          progressBar: GaugeProgressBar.rounded(
+            color: Color(0xFFB4C2F8),
+          ),
+          segments: [
+            GaugeSegment(
+              from: 0,
+              to: 33.3,
+              color: Color(0xFFD9DEEB),
+              cornerRadius: Radius.zero,
+            ),
+            GaugeSegment(
+              from: 33.3,
+              to: 66.6,
+              color: Color(0xFFD9DEEB),
+              cornerRadius: Radius.zero,
+            ),
+            GaugeSegment(
+              from: 66.6,
+              to: 100,
+              color: Color(0xFFD9DEEB),
+              cornerRadius: Radius.zero,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
