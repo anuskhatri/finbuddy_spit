@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_frontend/constants.dart';
 import 'package:flutter_frontend/controllers/goal_controller.dart';
+import 'package:flutter_frontend/pages/home/goal_tracking/goal_map.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 
@@ -49,7 +50,27 @@ class ListAllGoals extends StatelessWidget {
                   ),
                   child: InkWell(
                     onTap: () {
-                      // goalController.getGoalMap(goal.id);
+                      Get.to(() => GoalMap(
+                            targetDate: goal.targetDate,
+                            pendingAmount: double.parse(goal.goalAmount),
+                            interval: "Monthly",
+                            timeFrame: 12,
+                            goalTracks: [
+                              {"month": "Jan", "amount": "1000"},
+                              {"month": "Feb", "amount": "2000"},
+                              {"month": "Mar", "amount": "3000"},
+                              {"month": "Apr", "amount": "4000"},
+                              {"month": "May", "amount": "5000"},
+                              {"month": "Jun", "amount": "6000"},
+                              {"month": "Jul", "amount": "7000"},
+                              {"month": "Aug", "amount": "8000"},
+                              {"month": "Sep", "amount": "9000"},
+                              {"month": "Oct", "amount": "10000"},
+                              {"month": "Nov", "amount": "11000"},
+                              {"month": "Dec", "amount": "12000"},
+                            ],
+                            savingsNeeded: 1000,
+                          ));
                     },
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,

@@ -268,8 +268,8 @@ class Summary extends StatelessWidget {
                                   const SizedBox(height: 20),
                                   Container(
                                     alignment: Alignment.center,
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 1),
+                                    padding:
+                                        const EdgeInsets.symmetric(vertical: 1),
                                     width: double.infinity,
                                     height: 50,
                                     decoration: BoxDecoration(
@@ -279,7 +279,8 @@ class Summary extends StatelessWidget {
                                     child: TextFormField(
                                       // Sample static controller
                                       controller: TextEditingController(),
-                                      style: const TextStyle(color: Colors.white),
+                                      style:
+                                          const TextStyle(color: Colors.white),
                                       decoration: const InputDecoration(
                                         border: InputBorder.none,
                                         contentPadding: EdgeInsets.symmetric(
@@ -292,17 +293,70 @@ class Summary extends StatelessWidget {
                                     alignment: Alignment.centerRight,
                                     child: TextButton.icon(
                                       onPressed: () {
-                                        // Get.to(() => GoalMap(targetDate: , pendingAmount: pendingAmount, interval: interval, timeFrame: timeFrame, goalTracks: goalTracks, savingsNeeded: savingsNeeded));
+                                        Get.to(() => const GoalMap(
+                                              targetDate: "2022-12-31",
+                                              pendingAmount: 10000,
+                                              interval: "Monthly",
+                                              timeFrame: 12,
+                                              goalTracks: [
+                                                {
+                                                  "month": "Jan",
+                                                  "amount": "1000"
+                                                },
+                                                {
+                                                  "month": "Feb",
+                                                  "amount": "2000"
+                                                },
+                                                {
+                                                  "month": "Mar",
+                                                  "amount": "3000"
+                                                },
+                                                {
+                                                  "month": "Apr",
+                                                  "amount": "4000"
+                                                },
+                                                {
+                                                  "month": "May",
+                                                  "amount": "5000"
+                                                },
+                                                {
+                                                  "month": "Jun",
+                                                  "amount": "6000"
+                                                },
+                                                {
+                                                  "month": "Jul",
+                                                  "amount": "7000"
+                                                },
+                                                {
+                                                  "month": "Aug",
+                                                  "amount": "8000"
+                                                },
+                                                {
+                                                  "month": "Sep",
+                                                  "amount": "9000"
+                                                },
+                                                {
+                                                  "month": "Oct",
+                                                  "amount": "10000"
+                                                },
+                                                {
+                                                  "month": "Nov",
+                                                  "amount": "11000"
+                                                },
+                                                {
+                                                  "month": "Dec",
+                                                  "amount": "12000"
+                                                },
+                                              ],
+                                              savingsNeeded: 1000,
+                                            ));
                                       },
-                                      icon: const FaIcon(
-                                          FontAwesomeIcons.plus,
-                                          size: 17,
-                                          color: primaryColor),
+                                      icon: const FaIcon(FontAwesomeIcons.plus,
+                                          size: 17, color: primaryColor),
                                       label: const Text(
                                         "Generate Map",
                                         style: TextStyle(
-                                            color: primaryColor,
-                                            fontSize: 15),
+                                            color: primaryColor, fontSize: 15),
                                       ),
                                     ),
                                   )
