@@ -130,9 +130,9 @@ class MutualFundsController extends GetxController {
   RxString mutualFundInfoMessage = ''.obs;
   final searchType = 'genai'.obs;
 
-  var term = ''.obs;
-  var risk = ''.obs;
-  var returns = ''.obs;
+  var term = 'Long'.obs;
+  var risk = 'Low'.obs;
+  var returns = 'High'.obs;
 
   void toggleSearchType() {
     searchType.value = searchType.value == 'genai' ? 'amc' : 'genai';

@@ -1,16 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_frontend/constants.dart';
-import 'package:flutter_frontend/controllers/goal_controller.dart';
+import 'package:flutter_frontend/pages/home/goal_tracking/goal_map.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 
 class Summary extends StatelessWidget {
-  Summary({super.key});
-
-  final GoalController goalController = Get.put(GoalController());
+  const Summary({super.key});
 
   @override
   Widget build(BuildContext context) {
+    // Sample static data
+    final Map<String, dynamic> goalData = {
+      "goal_amount": 100000,
+      "time_frame": 365,
+      "bank_balance": 50000,
+      "pending_loan": 15000,
+      "month_income": 30000,
+      "net_savings": 20000,
+      "interval": "monthly",
+      "saving_needed_excluding_all": 5000,
+      "saving_needed_considering_all": 6000,
+      "message": "You are on track to achieve your goal!"
+    };
+
     return Scaffold(
       backgroundColor: bgColor,
       body: SingleChildScrollView(
@@ -50,7 +62,7 @@ class Summary extends StatelessWidget {
                                   fontWeight: FontWeight.bold),
                             ),
                             Text(
-                              "₹ ${goalController.goalData["goal_amount"]}",
+                              "₹ ${goalData["goal_amount"]}",
                               style: const TextStyle(
                                   color: subTextColor, fontSize: 15),
                             ),
@@ -69,11 +81,9 @@ class Summary extends StatelessWidget {
                                   fontWeight: FontWeight.bold),
                             ),
                             Text(
-                              goalController
-                                          .goalData["monthly_savings_needed"] ==
-                                      null
-                                  ? "${goalController.goalData["time_frame"]} Days"
-                                  : "${goalController.goalData["time_frame"] ~/ 365} Years",
+                              goalData["monthly_savings_needed"] == null
+                                  ? "${goalData["time_frame"]} Days"
+                                  : "${goalData["time_frame"] ~/ 365} Years",
                               style: const TextStyle(
                                   color: subTextColor, fontSize: 15),
                             ),
@@ -96,7 +106,7 @@ class Summary extends StatelessWidget {
                                   fontWeight: FontWeight.bold),
                             ),
                             Text(
-                              "₹ ${goalController.goalData["bank_balance"]}",
+                              "₹ ${goalData["bank_balance"]}",
                               style: const TextStyle(
                                   color: subTextColor, fontSize: 15),
                             ),
@@ -115,7 +125,7 @@ class Summary extends StatelessWidget {
                                   fontWeight: FontWeight.bold),
                             ),
                             Text(
-                              "₹ ${goalController.goalData["pending_loan"]}",
+                              "₹ ${goalData["pending_loan"]}",
                               style: const TextStyle(
                                   color: subTextColor, fontSize: 15),
                             ),
@@ -138,7 +148,7 @@ class Summary extends StatelessWidget {
                                   fontWeight: FontWeight.bold),
                             ),
                             Text(
-                              "₹ ${goalController.goalData["month_income"]}",
+                              "₹ ${goalData["month_income"]}",
                               style: const TextStyle(
                                   color: subTextColor, fontSize: 15),
                             ),
@@ -157,7 +167,7 @@ class Summary extends StatelessWidget {
                                   fontWeight: FontWeight.bold),
                             ),
                             Text(
-                              "₹ ${goalController.goalData["net_savings"]}",
+                              "₹ ${goalData["net_savings"]}",
                               style: const TextStyle(
                                   color: subTextColor, fontSize: 15),
                             ),
@@ -180,9 +190,9 @@ class Summary extends StatelessWidget {
                                   fontWeight: FontWeight.bold),
                             ),
                             Text(
-                              goalController.goalData['interval'] == "monthly"
-                                  ? "₹ ${goalController.goalData["saving_needed_excluding_all"]}/pm"
-                                  : "₹ ${goalController.goalData["saving_needed_excluding_all"]}/day",
+                              goalData['interval'] == "monthly"
+                                  ? "₹ ${goalData["saving_needed_excluding_all"]}/pm"
+                                  : "₹ ${goalData["saving_needed_excluding_all"]}/day",
                               style: const TextStyle(
                                   color: subTextColor, fontSize: 15),
                             ),
@@ -201,7 +211,7 @@ class Summary extends StatelessWidget {
                                   fontWeight: FontWeight.bold),
                             ),
                             Text(
-                              "₹ ${goalController.goalData["saving_needed_considering_all"]}",
+                              "₹ ${goalData["saving_needed_considering_all"]}",
                               style: const TextStyle(
                                   color: subTextColor, fontSize: 15),
                             ),
@@ -213,14 +223,15 @@ class Summary extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 20),
-              Text(goalController.goalData["message"],
+              Text(goalData["message"],
                   style: const TextStyle(color: subTextColor, fontSize: 15)),
               const SizedBox(height: 20),
               Row(
                 children: [
                   TextButton(
                     onPressed: () {
-                      Get.back();
+                      // Action for changing goal
+                      Navigator.of(context).pop();
                     },
                     child: const Text(
                       "Change Goal",
@@ -230,84 +241,77 @@ class Summary extends StatelessWidget {
                   const Spacer(),
                   TextButton(
                     onPressed: () {
+                      // Action for creating a goal (show dialog)
                       showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return Dialog(
-                              child: Container(
-                                padding: const EdgeInsets.all(20),
-                                height:
-                                    MediaQuery.of(context).size.height * 0.3,
-                                width: double.infinity,
-                                decoration: BoxDecoration(
-                                  color: bgColor,
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const Text(
-                                      "Give your goal a name",
-                                      style: TextStyle(
-                                          color: subTextColor,
-                                          fontSize: 17,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    const SizedBox(height: 20),
-                                    Container(
-                                      alignment: Alignment.center,
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 1),
-                                      width: double.infinity,
-                                      height: 50,
-                                      decoration: BoxDecoration(
-                                        color: overlayColor,
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                      child: TextFormField(
-                                        controller:
-                                            goalController.goalNameController,
-                                        style: const TextStyle(
-                                            color: Colors.white),
-                                        decoration: const InputDecoration(
-                                          border: InputBorder.none,
-                                          contentPadding: EdgeInsets.symmetric(
-                                              horizontal: 10, vertical: 5),
-                                        ),
-                                      ),
-                                    ),
-                                    const SizedBox(height: 20),
-                                    Container(
-                                      alignment: Alignment.centerRight,
-                                      child: TextButton.icon(
-                                        onPressed: () {
-                                          goalController.goalName.value =
-                                              goalController
-                                                  .goalNameController.text;
-
-                                          if (goalController
-                                              .goalName.isNotEmpty) {
-                                            goalController.addGoal();
-                                          }
-                                        },
-                                        icon: const FaIcon(
-                                            FontAwesomeIcons.plus,
-                                            size: 17,
-                                            color: primaryColor),
-                                        label: const Text(
-                                          "Generate Map",
-                                          style: TextStyle(
-                                              color: primaryColor,
-                                              fontSize: 15),
-                                        ),
-                                      ),
-                                    )
-                                  ],
-                                ),
+                        context: context,
+                        builder: (BuildContext context) {
+                          return Dialog(
+                            child: Container(
+                              padding: const EdgeInsets.all(20),
+                              height: MediaQuery.of(context).size.height * 0.3,
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                color: bgColor,
+                                borderRadius: BorderRadius.circular(10),
                               ),
-                            );
-                          });
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text(
+                                    "Give your goal a name",
+                                    style: TextStyle(
+                                        color: subTextColor,
+                                        fontSize: 17,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  const SizedBox(height: 20),
+                                  Container(
+                                    alignment: Alignment.center,
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 1),
+                                    width: double.infinity,
+                                    height: 50,
+                                    decoration: BoxDecoration(
+                                      color: overlayColor,
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: TextFormField(
+                                      // Sample static controller
+                                      controller: TextEditingController(),
+                                      style: const TextStyle(color: Colors.white),
+                                      decoration: const InputDecoration(
+                                        border: InputBorder.none,
+                                        contentPadding: EdgeInsets.symmetric(
+                                            horizontal: 10, vertical: 5),
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 20),
+                                  Container(
+                                    alignment: Alignment.centerRight,
+                                    child: TextButton.icon(
+                                      onPressed: () {
+                                        // Get.to(() => GoalMap(targetDate: , pendingAmount: pendingAmount, interval: interval, timeFrame: timeFrame, goalTracks: goalTracks, savingsNeeded: savingsNeeded));
+                                      },
+                                      icon: const FaIcon(
+                                          FontAwesomeIcons.plus,
+                                          size: 17,
+                                          color: primaryColor),
+                                      label: const Text(
+                                        "Generate Map",
+                                        style: TextStyle(
+                                            color: primaryColor,
+                                            fontSize: 15),
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      );
                     },
                     child: const Text(
                       "Create Goal",

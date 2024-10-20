@@ -44,6 +44,7 @@ dependencies:
   timeline_tile: ^2.0.0
   flutter_background_service: ^5.0.6
   smooth_page_indicator: ^1.2.0+3
+  gauge_indicator: ^0.4.3
 
 dev_dependencies:
   flutter_test:

@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_frontend/constants.dart';
 import 'package:flutter_frontend/controllers/goal_controller.dart';
+import 'package:flutter_frontend/pages/home/goal_tracking/summary.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 
@@ -28,7 +29,9 @@ class CreateGoal extends StatelessWidget {
               style: const TextStyle(color: Colors.white),
               decoration: InputDecoration(
                 suffix: IconButton(
-                  onPressed: (){},
+                  onPressed: (){
+                    goalController.showValidationField.value = true;
+                  },
                   icon: const FaIcon(
                     FontAwesomeIcons.paperPlane,
                     color: subTextColor,
@@ -314,7 +317,9 @@ class CreateGoal extends StatelessWidget {
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: TextButton(
-                            onPressed: (){},
+                            onPressed: (){
+                              Get.to(() => Summary());
+                            },
                             child: const Text(
                               "Create Summary",
                               style: TextStyle(
