@@ -1,10 +1,7 @@
-import 'package:bobhack/constants.dart';
-import 'package:bobhack/controllers/login_controller.dart';
-import 'package:bobhack/controllers/stocks_controller.dart';
-import 'package:bobhack/models/mutual_funds_modal.dart';
-import 'package:bobhack/pages/home/investment/your_funds.dart';
-import 'package:dio/dio.dart';
+
 import 'package:flutter/widgets.dart';
+import 'package:flutter_frontend/controllers/stocks_controller.dart';
+import 'package:flutter_frontend/models/mutual_funds_modal.dart';
 import 'package:get/get.dart';
 
 class InvestmentController extends GetxController {

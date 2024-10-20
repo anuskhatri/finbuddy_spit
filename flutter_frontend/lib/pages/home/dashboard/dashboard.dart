@@ -59,7 +59,6 @@ class _SpitDashboardState extends State<SpitDashboard> {
             child: TextButton(
               onPressed: () {
                 Get.to(() => PortfolioSummary());
-                summaryController.getPortfolioSummary();
               },
               child: Container(
                 alignment: Alignment.center,

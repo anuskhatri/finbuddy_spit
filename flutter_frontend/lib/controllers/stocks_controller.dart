@@ -1,8 +1,5 @@
-import 'dart:async';
-import 'package:bobhack/constants.dart';
-import 'package:bobhack/controllers/login_controller.dart';
-import 'package:bobhack/models/stocks_model.dart';
-import 'package:dio/dio.dart';
+
+import 'package:flutter_frontend/models/stocks_model.dart';
 import 'package:get/get.dart';
 
 class StocksController extends GetxController {

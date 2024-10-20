@@ -1,5 +1,5 @@
-import 'package:bobhack/constants.dart';
-import 'package:bobhack/models/notification_model.dart';
+
+import 'package:flutter_frontend/models/notification_model.dart';
 import 'package:get/get.dart';
 
 class NotificationController extends GetxController {
