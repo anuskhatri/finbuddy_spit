@@ -9,7 +9,7 @@ const SideNav = () => {
     })
     return (
         <div>
-            <div className='w-[30vh] min-h-[100vh] bg-[#d9d9d9] '>
+            <div className='w-[30vh] min-h-[100%] bg-[#d9d9d9] '>
                 <div className='  p-4'>
                     <div className='text-2xl text-center'>
                         Rehan Ansari 
