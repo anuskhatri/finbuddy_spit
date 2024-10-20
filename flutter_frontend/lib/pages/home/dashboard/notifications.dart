@@ -1,6 +1,6 @@
-import 'package:Spithack/constants.dart';
-import 'package:Spithack/controllers/notification_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_frontend/constants.dart';
+import 'package:flutter_frontend/controllers/notification_controller.dart';
 import 'package:get/get.dart';
 
 class Notifications extends StatelessWidget {

@@ -1,6 +1,10 @@
 import 'dart:async';
+
+import 'package:bobhack/constants.dart';
+import 'package:bobhack/controllers/investment_controller.dart';
+import 'package:bobhack/pages/home/home.dart';
+import 'package:bobhack/pages/login/bob_login.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_frontend/pages/login/spit_login.dart';
 import 'package:get/get.dart';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -8,6 +12,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 class LoginController extends GetxController {
   final TextEditingController accountController = TextEditingController();
   final TextEditingController pinController = TextEditingController();
+  final InvestmentController investmentController =
+      Get.put(InvestmentController());
 
   String? errorMessage;
   String? sessionToken;
@@ -41,7 +47,7 @@ class LoginController extends GetxController {
     sessionToken = null;
     sessionExists = false;
     pinController.clear();
-    Get.offAll(() => SpitLogin());
+    Get.offAll(() => BobLogin());
   }
 
   String? validateAccountNumber(String? value) {
@@ -66,10 +72,151 @@ class LoginController extends GetxController {
     return errorMessage;
   }
 
+  void loginWithPin() {
+    if (validatePin(pinController.text) == null) {
+      Dio dio = Dio();
+      dio.post('$baseUrl/api/auth/validateUser', data: {
+        "accountNumber": sessionToken,
+        'pin': int.parse(pinController.text),
+      }).then((response) {
+        if (response.data['error'] == "Session Expired" &&
+            response.data['valid'] == false) {
+          deleteSessionKey();
+          Get.snackbar(
+            colorText: Colors.white,
+            'Error',
+            response.data["error"] as String,
+            duration: const Duration(seconds: 2),
+            snackPosition: SnackPosition.TOP,
+          );
+
+          return;
+        } else if (response.data["valid"] == false) {
+          Get.snackbar(
+            colorText: Colors.white,
+            'Invalid Credentials',
+            response.data["error"] as String,
+            duration: const Duration(seconds: 2),
+            snackPosition: SnackPosition.TOP,
+          );
+          counter.value++;
+          if (counter.value == 4) {
+            Get.snackbar(
+              colorText: Colors.white,
+              'Too many attempts please login again',
+              response.data["error"] as String,
+              duration: const Duration(seconds: 2),
+              snackPosition: SnackPosition.TOP,
+            );
+            deleteSessionKey();
+            Get.back();
+            counter.value = 0;
+          }
+          return;
+        }
+
+        Get.snackbar(
+          colorText: Colors.white,
+          'Success',
+          'Login successful!',
+          duration: const Duration(seconds: 2),
+          snackPosition: SnackPosition.TOP,
+        );
+        Get.off(
+          () => const BobHome(),
+          curve: Curves.easeIn,
+          duration: const Duration(
+            milliseconds: 500,
+          ),
+        );
+      }).catchError((error) {
+        // Handle error
+      }).whenComplete(() {
+        pinController.clear();
+      });
+    } else {
+      Get.snackbar(
+        colorText: Colors.white,
+        'Error',
+        errorMessage ?? 'An error occurred',
+        duration: const Duration(seconds: 2),
+        snackPosition: SnackPosition.TOP,
+      );
+    }
+  }
+
   Timer? cooldownTimer;
   DateTime? _lastAttemptTime;
   static const int cooldownDurationMinutes = 3;
 
+  void login() {
+    if (errorMessage == null) {
+      if (sessionExists) {
+        loginWithPin();
+        return;
+      }
+
+      // Check if user is in cooldown
+      if (_isInCooldown()) {
+        Get.snackbar(
+          colorText: Colors.white,
+          'Cooldown',
+          'You need to wait before trying again.',
+          duration: const Duration(seconds: 2),
+          snackPosition: SnackPosition.TOP,
+        );
+        return;
+      }
+      Dio().post('$baseUrl/api/auth/createUser', data: {
+        'accountNumber': int.parse(accountController.text.replaceAll(" ", '')),
+        'pin': int.parse(pinController.text),
+      }).then((response) async {
+        if (response.data['error'] != null) {
+          Get.snackbar(
+            colorText: Colors.white,
+            'Error',
+            response.data["error"] as String,
+            duration: const Duration(seconds: 2),
+            snackPosition: SnackPosition.TOP,
+          );
+          counter.value++;
+
+          if (counter.value == 4) {
+            _startCooldown();
+            Get.snackbar(
+              colorText: Colors.white,
+              'Too many attempts',
+              'Please wait before trying again.',
+              duration: const Duration(seconds: 2),
+              snackPosition: SnackPosition.TOP,
+            );
+          }
+          return;
+        }
+
+        counter.value = 0;
+        _lastAttemptTime = null;
+        saveSessionKey(response.data['token']);
+
+        Get.snackbar(
+          colorText: Colors.white,
+          'Success',
+          'Login successful!',
+          duration: const Duration(seconds: 2),
+          snackPosition: SnackPosition.TOP,
+        );
+
+        Get.off(
+          () => const BobHome(),
+          curve: Curves.easeIn,
+          duration: const Duration(milliseconds: 500),
+        );
+      }).whenComplete(() {
+        accountController.clear();
+        pinController.clear();
+      });
+    }
+  }
 
   bool _isInCooldown() {
     if (_lastAttemptTime == null) return false;

@@ -1,9 +1,10 @@
-import 'package:Spithack/controllers/investment_controller.dart';
-import 'package:Spithack/constants.dart';
-import 'package:Spithack/controllers/summary_controller.dart';
-import 'package:Spithack/controllers/transaction_controller.dart';
-import 'package:Spithack/pages/home/dashboard/charts/piechart.dart';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_frontend/constants.dart';
+import 'package:flutter_frontend/controllers/investment_controller.dart';
+import 'package:flutter_frontend/controllers/summary_controller.dart';
+import 'package:flutter_frontend/controllers/transaction_controller.dart';
+import 'package:flutter_frontend/pages/home/dashboard/charts/piechart.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';

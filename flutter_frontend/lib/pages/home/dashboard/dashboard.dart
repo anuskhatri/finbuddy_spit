@@ -1,14 +1,14 @@
-import 'package:Spithack/constants.dart';
-import 'package:Spithack/controllers/login_controller.dart';
-import 'package:Spithack/controllers/summary_controller.dart';
-import 'package:Spithack/controllers/transaction_controller.dart';
-import 'package:Spithack/pages/home/dashboard/balance.dart';
-import 'package:Spithack/pages/home/dashboard/chat_bot.dart';
-import 'package:Spithack/pages/home/dashboard/header.dart';
-import 'package:Spithack/pages/home/dashboard/linked_accounts.dart';
-import 'package:Spithack/pages/home/dashboard/overall_investment.dart';
-import 'package:Spithack/pages/home/dashboard/portfolio_summary.dart';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_frontend/constants.dart';
+import 'package:flutter_frontend/controllers/summary_controller.dart';
+import 'package:flutter_frontend/controllers/transaction_controller.dart';
+import 'package:flutter_frontend/pages/home/dashboard/balance.dart';
+import 'package:flutter_frontend/pages/home/dashboard/chat_bot.dart';
+import 'package:flutter_frontend/pages/home/dashboard/header.dart';
+import 'package:flutter_frontend/pages/home/dashboard/linked_accounts.dart';
+import 'package:flutter_frontend/pages/home/dashboard/overall_investment.dart';
+import 'package:flutter_frontend/pages/home/dashboard/portfolio_summary.dart';
 import 'package:get/get.dart';
 
 class SpitDashboard extends StatefulWidget {

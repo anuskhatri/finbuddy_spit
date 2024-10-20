@@ -1,8 +1,7 @@
 import 'dart:ui';
-
-import 'package:Spithack/constants.dart';
-import 'package:Spithack/pages/home/dashboard/finbuddy_bot.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_frontend/constants.dart';
+import 'package:flutter_frontend/pages/home/dashboard/finbuddy_bot.dart';
 import 'package:get/get.dart';
 
 class ChatBot extends StatelessWidget {

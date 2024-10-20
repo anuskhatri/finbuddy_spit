@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_frontend/constants.dart';
+import 'package:flutter_frontend/controllers/transaction_controller.dart';
 import 'package:flutter_frontend/pages/home/dashboard/charts/barchart.dart';
 import 'package:flutter_frontend/pages/home/dashboard/charts/piechart.dart';
+import 'package:flutter_frontend/pages/widgets/transaction_tile.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';

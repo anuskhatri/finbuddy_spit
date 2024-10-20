@@ -1,7 +1,8 @@
-import 'package:Spithack/constants.dart';
-import 'package:Spithack/controllers/transaction_controller.dart';
+
 import 'package:d_chart/d_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_frontend/constants.dart';
+import 'package:flutter_frontend/controllers/transaction_controller.dart';
 import 'package:get/get.dart';
 
 class BarChart extends StatelessWidget {
