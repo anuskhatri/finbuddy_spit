@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'BOB Hackathon',
+      title: 'Spit Hackathon',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Color(bgColor.value)),
         useMaterial3: true,
